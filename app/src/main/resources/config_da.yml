@@ -1,0 +1,20 @@
+brokerAddress: "127.0.0.1"
+brokerPort: 1883
+daProperties:
+  - propertyKey: "energy"
+    topic: "dummy/properties/energy"
+    type: "double"
+    #field-type: "int"
+  - propertyKey: "switch"
+    topic: "dummy/properties/switch"
+    type: "string"
+daActions:
+  - actionKey: "switch-off"
+    topic: "app/actions/switch-off"
+    actionMessage: "OFF"
+  - actionKey: "switch-on"
+    topic: "app/actions/switch-on"
+    actionMessage: "ON"
+daEvents:
+  - eventKey: "overheating"
+    topic: "dummy/events/overheating/notifications"
