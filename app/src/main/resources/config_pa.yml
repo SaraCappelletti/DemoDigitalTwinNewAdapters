@@ -6,8 +6,8 @@ paProperties:
     type: "json-array"
     field-type: "int"
     initialValue:
-    - 0
-    - 4
+      - 0
+      - 4
   - propertyKey: "switch"
     topic: "device/switch"
     type: "string"

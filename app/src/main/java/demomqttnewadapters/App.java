@@ -13,6 +13,7 @@ import physical.MqttPhysicalAdapter;
 import physical.MqttPhysicalAdapterConfiguration;
 import physical.exception.MqttPhysicalAdapterConfigurationException;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class App {
@@ -20,30 +21,28 @@ public class App {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "error");
 
         WldtEngine dtEngine = new WldtEngine(new DefaultShadowingFunction(), "mqtt-device-digital-twin");
-        dtEngine.addPhysicalAdapter(buildMqttPhysicalAdapter());
-        dtEngine.addDigitalAdapter(buildMqttDigitalAdapter());
+        dtEngine.addPhysicalAdapter(buildMqttPhysicalAdapter("app/src/main/resources/config_pa.yml"));
+        dtEngine.addDigitalAdapter(buildMqttDigitalAdapter("app/src/main/resources/config_da.yml"));
 
         dtEngine.startLifeCycle();
     }
 
 
 
-    private static MqttPhysicalAdapter buildMqttPhysicalAdapter() throws MqttPhysicalAdapterConfigurationException, MqttException, IOException {
-        String filepath = "src/main/resources/config_pa.yml";
+    private static MqttPhysicalAdapter buildMqttPhysicalAdapter(String filepath) throws MqttPhysicalAdapterConfigurationException, MqttException, IOException {
         MqttPhysicalAdapterConfiguration configuration = MqttPhysicalAdapterConfiguration
-                .builder("localhost", 1883, "mqtt.physical.adapter")
-                .addPhysicalAssetPropertyAndTopic("intensity", 0, "sensor/intensity", Integer::parseInt)
+                .builder(filepath)
+                .readFromConfig()
                 .build();
         return new MqttPhysicalAdapter("mqtt-device-pa", configuration);
     }
 
-    private static MqttDigitalAdapter buildMqttDigitalAdapter() throws MqttException, MqttDigitalAdapterConfigurationException, IOException {
+    private static MqttDigitalAdapter buildMqttDigitalAdapter(String filepath) throws MqttException, MqttDigitalAdapterConfigurationException, IOException {
         //NB: In MqttDigitalAdapter topics for Property and Event are OutgoingTopics,
         // so each function takes as input something that has the same type as the body of the Event or Property
-        String filepath = "src/main/resources/config_da.yml";
         MqttDigitalAdapterConfiguration configuration = MqttDigitalAdapterConfiguration
-                .builder("localhost", 1883, "mqtt.digital.adapter")
-                .addActionTopic("switch_off", "app/actions/switch-off", msg -> "OFF")
+                .builder(filepath)
+                .readFromConfig()
                 .build();
         return new MqttDigitalAdapter("test-mqtt-da", configuration);
     }
