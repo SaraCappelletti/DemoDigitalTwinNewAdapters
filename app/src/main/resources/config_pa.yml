@@ -1,4 +1,4 @@
-brokerAddress: "127.0.0.1"
+brokerAddress: "host.docker.internal"
 brokerPort: 1883
 paProperties:
   - propertyKey: "intensity"
